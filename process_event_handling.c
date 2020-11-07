@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "queue_functions.c"
-#include "driver.c"
+
+
 
 //global
-float time = 0.0;
 //CPU state:
 //1. Active
 //2. Idle
@@ -26,21 +25,21 @@ float next_process_time;
 */
 
 
-
-void create_process(){
+//time variable is system time
+void create_process(event* event_head, process* process_head, float time, int schedule){
 	//push process
-	push_process(&process_head, 0, 0, 0, total_processes);
+	push_process(&process_head, 0.1);
 	
 	//push appropriate events
 	//arrival event
-	push_event(event** head, time, 1 , priority)
+	push_event(&event_head, time, 1);
 	
 	//if round robin create time slice event
 	if(schedule == 2)
-		push_event(event** head, time, 3 , priority)
+		push_event(&event_head, time, 3);
 	//else push Completion event
 	else
-		push_event(event** head, time, 2 , priority)
+		push_event(&event_head, time, 2);
 	
 	//Update times
 	
@@ -51,34 +50,35 @@ void create_process(){
 
 
 //Process the next event
-void process_event(event** eve){
+//time variable is the system time
+void process_event(event* eve, event* event_head, process* process_head, float time, int schedule, float quantum){
 	//if arrival
 	if(eve->type == 1){
 		CPU = 1;
 		time = process_head->arrival_time;
 		
-		pop_event(event_head);
+		pop_event(&event_head);
 	}
 	
 	//if completion
 	if(eve->type == 2){
 		CPU = 2;
 		if(schedule < 2)
-			time += process_head->burst time;
+			time += process_head->burst_time;
 		else
 			time += process_head->remaining_time;
-		pop_process(process_head);
-		pop_event(event_head);
+		pop_process(&process_head);
+		pop_event(&event_head);
 	}
 	
 	//if time slice
-	if(eve->type == 3{
+	if(eve->type == 3){
 		process_head->remaining_time = (process_head->burst_time - quantum);
-		if(process_head->time_remaining > 0.0)
+		if(process_head->remaining_time > 0.0)
 			time += quantum;
-		if(process_head->time_remaining <= 0.0)
-			time += (quantum + process_head->time_remaining);
-			pop_process(process_head);
+		if(process_head->remaining_time <= 0.0)
+			time += (quantum + process_head->remaining_time);
+			pop_process(&process_head);
 		//Move process to the back of line
 		
 	}

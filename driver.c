@@ -25,8 +25,10 @@ bool end_condition = false;
 int schedule;
 //This will hold command line quantum
 float quantum;
-
 const int MAX_PROCESSES = 10000;
+
+process* process_head(0.1);
+event* event_head = new_event(1.0,1);
 
 void printList(struct event* n) 
 { 
@@ -45,29 +47,28 @@ void printList(struct event* n)
 
 
 int main(){
-	
+	//create_process();
 
+	//process* process_head(0.1);
+	//event* event_head = new_event(1.0,1,5);
 	
-	event* head = new_event(1.0,1,5);
+	/*
+	push_event(&event_head, 3.0,2,3);
+	push_event(&event_head, 2.0,3,2);
+	push_event(&event_head, 4.0,3,4);
 	
 	
-	push_event(&head, 3.0,2,3);
-	push_event(&head, 2.0,3,2);
-	push_event(&head, 4.0,3,4);
-	
-	
-	printList(head);
+	printList(event_head);
 	 
 	
 	
-	pop_event(&head);
+	pop_event(&event_head);
 	
-	printList(head);
-	pop_event(&head);
-	pop_event(&head);
+	printList(event_head);
+	pop_event(&event_head);
+	pop_event(&event_head);
 	
-	///////////test creating two processes and the needed events
-	
+	*/
 	
 	
 	return 0;

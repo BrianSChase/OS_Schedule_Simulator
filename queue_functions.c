@@ -21,10 +21,9 @@ struct event{
 
 //Process structure
 struct process{
-	int burst_time;
-	int arrival_time;
-	int remaining_time;
-	int pid;
+	float burst_time;
+	float arrival_time;
+	float remaining_time;
 	//To determine where it is in the queue
 	int position = 0;
 	struct process* next;
@@ -38,22 +37,17 @@ event* new_event(float t, int ty)
     event* temp = (event*)malloc(sizeof(event)); 
     temp->time = t; 
     temp->type = ty; 
-	temp->priority = p;
     temp->next = NULL; 
   
     return temp; 
 }
 
  
-process* new_process(int b, int p, int arr, int id) 
+process* new_process(float b) 
 { 
     process* temp = (process*)malloc(sizeof(process)); 
     temp->burst_time = b; 
-    temp->priority = p; 
-	temp->arrival_time = arr;
-	temp->pid = id;
     temp->next = NULL; 
-	total_processes++;
   
     return temp; 
 }
@@ -68,12 +62,12 @@ void pop_event(event** head)
 } 
 
 //push based on priority
-void push_event(event** head, float t, int ty, int p) 
+void push_event(event** head, float t, int ty) 
 { 
     event* start = (*head); 
   
     // Create new event 
-    event* temp = new_event(t, ty, p); 
+    event* temp = new_event(t, ty); 
   
     // Special Case: The head of list has lesser 
     // priority than new node. So insert new 
@@ -111,18 +105,18 @@ void pop_process(process** head)
 
 
 
-//push based on priority
-void push_process(process** head, int b, int p,int arr, int id) 
+//push based on shortest burst time
+void push_process(process** head, float b) 
 { 
    process* start = (*head); 
   
     // Create new process 
-    process* temp = new_process(b, p, arr, id); 
+    process* temp = new_process(b); 
   
     // Special Case: The head of list has lesser 
     // priority than new node. So insert new 
     // node before head node and change head node. 
-    if ((*head)->priority > p) { 
+    if ((*head)->burst_time > b) { 
   
         // Insert New Node before head 
         temp->next = *head; 
@@ -133,7 +127,7 @@ void push_process(process** head, int b, int p,int arr, int id)
         // Traverse the list and find a 
         // position to insert new node 
         while (start->next != NULL && 
-               start->next->priority < p) { 
+               start->next->burst_time < b) { 
             start = start->next; 
 			//keeps track of what position it is in the list
 			temp->position++;
